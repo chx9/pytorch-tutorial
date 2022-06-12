@@ -1,6 +1,7 @@
 import enum
 import struct
 from turtle import forward
+from cv2 import BORDER_WRAP
 import torch
 import torch.nn as nn
 import torchvision
@@ -10,7 +11,9 @@ num_epochs = 5
 num_classes = 10
 batch_size = 100
 lr = 0.001
-device = 'mps'
+
+device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+print(device)
 # device = 'cpu'
 # MNIST dataset
 train_dataset = torchvision.datasets.MNIST(root='../../data/',
@@ -56,7 +59,7 @@ class ConvNet(nn.Module):
 
 model = ConvNet(num_classes).to(device)
 
-criterion = nn.CrossEntropyLoss().to(device)
+criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
 total_step = len(train_loader)
@@ -64,9 +67,9 @@ total_step = len(train_loader)
 for epoch in range(num_epochs):
     for i, (imgs, labels) in enumerate(train_loader):
         imgs = imgs.to(device)
-        lables = labels.to(device)
+        labels = labels.to(device)
+
         outputs = model(imgs)
-        
         loss = criterion(outputs, labels)
 
         optimizer.zero_grad()
