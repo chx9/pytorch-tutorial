@@ -6,15 +6,14 @@ import torch
 import torch.nn as nn
 import torchvision
 import torchvision.transforms as transforms
-
+import time
+now = time.time()
 num_epochs = 5
 num_classes = 10
 batch_size = 100
 lr = 0.001
 
-device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-print(device)
-# device = 'cpu'
+device = 'mps'
 # MNIST dataset
 train_dataset = torchvision.datasets.MNIST(root='../../data/',
                                            train=True, 
@@ -79,3 +78,6 @@ for epoch in range(num_epochs):
         if(i+1) % 100 == 0:
              print ('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}' 
                    .format(epoch+1, num_epochs, i+1, total_step, loss.item()))
+
+
+print('time: {}'.format(time.time()-now))
