@@ -10,10 +10,10 @@ import torchvision
 import torchvision.transforms as transforms
 
 device = 'mps'
-device = 'cpu'
+# device = 'cpu'
 
 then = time.time()
-num_epochs = 2
+num_epochs = 60
 batch_size = 100
 lr = 0.001
 
@@ -117,7 +117,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr)
 
 # for updating learning rate
 def update_lr(optimizer, lr):
-    for param_group in optimizer:
+    for param_group in optimizer.param_groups:
         param_group['lr'] = lr 
 
 
